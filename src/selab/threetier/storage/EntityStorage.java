@@ -10,7 +10,7 @@ public class EntityStorage<T extends Entity> {
     private HashMap<Integer, T> list = new HashMap<Integer, T>();
     private int counter = 0;
 
-    public int addOrUpdate(T item) {
+    public Integer addOrUpdate(T item) {
         int id = item.getId();
         if (id == 0) {
             item.setId(++counter);

@@ -2,6 +2,7 @@ package selab.threetier.logic;
 
 import selab.threetier.storage.Storage;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,7 +16,12 @@ public class Task extends Entity {
     public String getTitle() { return title; }
     public void setTitle(String value) { title = value; }
 
-    public void setStart(Date value) { start = value; }
+    public void setStart(Date value) throws ParseException {
+        if (end != null && value.after(end)) {
+            throw new ParseException("ERROR", 0);
+        }
+        start = value;
+    }
     public String getStartDate() {
         return new SimpleDateFormat("YYYY-MM-DD").format(start);
     }
@@ -23,12 +29,24 @@ public class Task extends Entity {
         return new SimpleDateFormat("HH:mm:ss").format(start);
     }
 
-    public void setEnd(Date value) { end = value; }
+    public void setEnd(Date value) throws ParseException {
+        if (value.before(start)) {
+            throw new ParseException("ERROR", 0);
+        }
+        end = value;
+    }
     public String getEndTime() {
         return new SimpleDateFormat("HH:mm:ss").format(end);
     }
 
-    public void save() {
+    public void save() throws ParseException {
+        ArrayList<Task> tasks = Storage.getInstance().getTasks().getAll();
+        for (Task task:
+             tasks) {
+            if (this.start.before(task.end) && task.start.before(this.end)) {
+                throw new ParseException("ERROR", 0);
+            }
+        }
         Storage.getInstance().getTasks().addOrUpdate(this);
     }
 

@@ -28,10 +28,10 @@ public class AddTaskPresentation extends JSONPresentation {
         try {
             newTask.setStart(new SimpleDateFormat("y-M-d H:m:s").parse(request.getString("start")));
             newTask.setEnd(new SimpleDateFormat("y-M-d H:m:s").parse(request.getString("end")));
+            newTask.save();
         } catch (ParseException ex) {
             throw new IOException("Invalid date/time format");
         }
-        newTask.save();
 
         Map<String, String> result = new HashMap<>();
         result.put("success", "true");
