@@ -5,6 +5,7 @@ import selab.threetier.storage.Storage;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.logging.SimpleFormatter;
 
@@ -55,6 +56,8 @@ public class Task extends Entity {
     }
 
     public static ArrayList<Task> getAll() {
-        return Storage.getInstance().getTasks().getAll();
+        ArrayList<Task> tasks = Storage.getInstance().getTasks().getAll();
+        tasks.sort((task, t1) -> task.start.before(t1.start) ? -1 : 1);
+        return tasks;
     }
 }
