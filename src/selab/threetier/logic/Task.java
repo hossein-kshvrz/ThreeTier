@@ -32,6 +32,10 @@ public class Task extends Entity {
         Storage.getInstance().getTasks().addOrUpdate(this);
     }
 
+    public void remove() {
+        Storage.getInstance().getTasks().delete(this);
+    }
+
     public static ArrayList<Task> getAll() {
         return Storage.getInstance().getTasks().getAll();
     }
